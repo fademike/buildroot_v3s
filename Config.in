@@ -1,6 +1,10 @@
 # Uncomment lines if needed
 source "$BR2_EXTERNAL_V3S3_PATH/package/libcedarc/Config.in"
 source "$BR2_EXTERNAL_V3S3_PATH/package/h264enc_demo/Config.in"
+source "$BR2_EXTERNAL_V3S3_PATH/package/esp/Config.in"
+source "$BR2_EXTERNAL_V3S3_PATH/package/gst1-plugin-cedar/Config.in"
+source "$BR2_EXTERNAL_V3S3_PATH/package/uboot_spi/Config.in"
+source "$BR2_EXTERNAL_V3S3_PATH/package/gst1-rtsp-server-example/Config.in"
 
 config BR2_EXTERNAL_ENABLE_INITRAMFS
 	bool "Include pre-built initramfs image"

@@ -13,6 +13,9 @@ The main goal is to support all available features/peripherals on these SoCs wit
 - Automatic start of `udhcpc` and SSH support via `dropbear`
 - `initramfs` support, as a simple way to perform full-disk upgrades over the air. This is disabled by default; for more information, see _insert link here_
 - `u-boot` env support: boot env variables can be accessed in userspace via the `fw_getenv` and `fw_setenv` commands
+- driver for esp8089
+- gst1-plugin-cedar (cedar_h264enc for gstreamer)
+- support spi nor flash
 
 ## Tested SoC Hardware Features
 
@@ -61,4 +64,5 @@ sudo dd if=output/images/sdcard.img of=/dev/sdX bs=4M
 Enable the "CedarVE H.264 encoding demo" option in the `make nconfig` customizations step (located in the `External options` sub-menu), and proceed with the build process.
 
 Demo program source code is available at [h264enc_demo](https://github.com/Unturned3/h264enc_demo)
+
 

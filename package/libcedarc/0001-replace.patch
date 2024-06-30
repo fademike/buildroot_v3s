@@ -1,0 +1,36 @@
+diff --git a/replace.patch b/replace.patch
+new file mode 100644
+index 0000000..e69de29
+diff --git a/vdecoder/sbm/sbmStream.c b/vdecoder/sbm/sbmStream.c
+index 53cc9bd..10d4d81 100755
+--- a/vdecoder/sbm/sbmStream.c
++++ b/vdecoder/sbm/sbmStream.c
+@@ -95,12 +95,12 @@ int SbmStreamInit(SbmInterface* pSelf, SbmConfig* pSbmConfig)
+     if(pSbm->frameFifo.pFrames == NULL)
+     {
+         loge("sbm->frameFifo.pFrames == NULL.");
+-        free(pSbm);
+         if(pSbm->mConfig.bVirFlag == 1)
+             free(pSbmBuf);
+         else
+             CdcMemPfree(pSbm->mConfig.memops,pSbmBuf,
+                         pSbm->mConfig.veOpsS, pSbm->mConfig.pVeOpsSelf);
++        free(pSbm);
+         return -1;
+     }
+     memset(pSbm->frameFifo.pFrames, 0,  SBM_FRAME_FIFO_SIZE * sizeof(VideoStreamDataInfo));
+@@ -114,13 +114,13 @@ int SbmStreamInit(SbmInterface* pSelf, SbmConfig* pSbmConfig)
+     {
+         loge("pthread_mutex_init failed.");
+         free(pSbm->frameFifo.pFrames);
+-        free(pSbm);
+ 
+         if(pSbm->mConfig.bVirFlag == 1)
+             free(pSbmBuf);
+         else
+             CdcMemPfree(pSbm->mConfig.memops,pSbmBuf,
+                         pSbm->mConfig.veOpsS, pSbm->mConfig.pVeOpsSelf);
++        free(pSbm);
+         return -1;
+     }
+     pSbm->pStreamBuffer      = pSbmBuf;

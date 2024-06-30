@@ -1,0 +1,92 @@
+diff --git a/.config b/.config
+index 844ec79325..06bade56bf 100644
+--- a/.config
++++ b/.config
+@@ -627,7 +627,9 @@ CONFIG_DM_KEYBOARD=y
+ #
+ # MTD Support
+ #
+-# CONFIG_MTD is not set
++CONFIG_MTD=y
++CONFIG_CFI_FLASH=y
++# CONFIG_ALTERA_QSPI is not set
+ 
+ #
+ # NAND Device Support
+@@ -650,16 +652,16 @@ CONFIG_DM_KEYBOARD=y
+ CONFIG_DM_SPI_FLASH=y
+ CONFIG_SPI_FLASH=y
+ CONFIG_SPI_FLASH_BAR=y
+-# CONFIG_SPI_FLASH_ATMEL is not set
+-# CONFIG_SPI_FLASH_EON is not set
++CONFIG_SPI_FLASH_ATMEL=y
++CONFIG_SPI_FLASH_EON=y
+ CONFIG_SPI_FLASH_GIGADEVICE=y
+ CONFIG_SPI_FLASH_MACRONIX=y
+ CONFIG_SPI_FLASH_SPANSION=y
+ CONFIG_SPI_FLASH_STMICRO=y
+-# CONFIG_SPI_FLASH_SST is not set
++CONFIG_SPI_FLASH_SST=y
+ CONFIG_SPI_FLASH_WINBOND=y
+ CONFIG_SPI_FLASH_USE_4K_SECTORS=y
+-# CONFIG_SPI_FLASH_DATAFLASH is not set
++CONFIG_SPI_FLASH_DATAFLASH=y
+ CONFIG_SPI_FLASH_MTD=y
+ CONFIG_SPL_SPI_SUNXI=y
+ 
+diff --git a/drivers/mtd/spi/spi_flash_ids.c b/drivers/mtd/spi/spi_flash_ids.c
+index edca94e30c..9e63214530 100644
+--- a/drivers/mtd/spi/spi_flash_ids.c
++++ b/drivers/mtd/spi/spi_flash_ids.c
+@@ -63,6 +63,7 @@ const struct spi_flash_info spi_flash_ids[] = {
+ 	{"en25s64",	   INFO(0x1c3817, 0x0, 64 * 1024,   128, 0) },
+ #endif
+ #ifdef CONFIG_SPI_FLASH_GIGADEVICE	/* GIGADEVICE */
++	{"gd25q128b",	   INFO(0xc84018, 0x0, 64 * 1024,   256, SECT_4K) },
+ 	{"gd25q64b",	   INFO(0xc84017, 0x0, 64 * 1024,   128, SECT_4K) },
+ 	{"gd25lq32",	   INFO(0xc86016, 0x0, 64 * 1024,    64, SECT_4K) },
+ #endif
+@@ -78,7 +79,9 @@ const struct spi_flash_info spi_flash_ids[] = {
+ 	{"mx25l1605d",	   INFO(0xc22015, 0x0, 64 * 1024,    32, 0) },
+ 	{"mx25l3205d",	   INFO(0xc22016, 0x0, 64 * 1024,    64, 0) },
+ 	{"mx25l6405d",	   INFO(0xc22017, 0x0, 64 * 1024,   128, 0) },
+-	{"mx25l12805",	   INFO(0xc22018, 0x0, 64 * 1024,   256, RD_FULL | WR_QPP) },
++	//{"mx25l12805",	   INFO(0xc22018, 0x0, 64 * 1024,   256, RD_FULL | WR_QPP) },
++	{"mx25l12805",	   INFO(0xc22018, 0x0, 64 * 1024,   256, SECT_4K) },
++
+ 	{"mx25l25635f",	   INFO(0xc22019, 0x0, 64 * 1024,   512, RD_FULL | WR_QPP) },
+ 	{"mx25l51235f",	   INFO(0xc2201a, 0x0, 64 * 1024,  1024, RD_FULL | WR_QPP) },
+ 	{"mx25l12855e",	   INFO(0xc22618, 0x0, 64 * 1024,   256, RD_FULL | WR_QPP) },
+diff --git a/include/configs/sun8i.h b/include/configs/sun8i.h
+index e71efd69d9..d66a86d010 100644
+--- a/include/configs/sun8i.h
++++ b/include/configs/sun8i.h
+@@ -28,12 +28,12 @@
+ #endif
+ 
+ #define CONFIG_BOOTCOMMAND   "sf probe 0; "                           \
+-                             "sf read 0x41800000 0x100000 0x10000; "  \
+-                             "sf read 0x41000000 0x110000 0x400000; " \
++                             "sf read 0x41800000 0x80000 0x10000; "  \
++                             "sf read 0x41000000 0x90000 0x490000; " \
+                              "bootz 0x41000000 - 0x41800000"
+ 
+ #define CONFIG_BOOTARGS      "console=ttyS0,115200 earlyprintk panic=5 rootwait " \
+-                             "mtdparts=spi32766.0:1M(uboot)ro,64k(dtb)ro,4M(kernel)ro,-(rootfs) root=31:03 rw rootfstype=jffs2"
++                             "mtdparts=spi0:1M(uboot)ro,64k(dtb)ro,5056k(kernel)ro,-(rootfs) root=/dev/mtdblock3 ro rootfstype=squashfs"
+ 
+ #define CONFIG_CMD_BOOTZ 1
+ 
+diff --git a/include/configs/sunxi-common.h b/include/configs/sunxi-common.h
+index fcecd0bfca..e95326d06b 100644
+--- a/include/configs/sunxi-common.h
++++ b/include/configs/sunxi-common.h
+@@ -201,7 +201,7 @@
+ #endif
+ #define CONFIG_ENV_IS_IN_SPI_FLASH
+ #undef CONFIG_ENV_OFFSET
+-#define CONFIG_ENV_OFFSET		0x000f8000
++#define CONFIG_ENV_OFFSET		0x00078000	//0x000f8000
+ #endif
+ 
+ #define CONFIG_SPL_FRAMEWORK

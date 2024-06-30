@@ -1,0 +1,35 @@
+#!/bin/sh                                                                       
+# 
+# start sustom settings
+#
+
+start() {
+        echo "start esp8089"
+        modprobe esp8089
+        /bin/sleep 2
+}
+stop() {
+        echo "stop esp8089"
+#        rmmod esp8089
+}
+restart() {
+        stop
+        start
+}
+
+case "$1" in
+  start)
+        start
+        ;;
+  stop)
+        stop
+        ;;
+  restart|reload)
+        restart
+        ;;
+  *)
+        echo "Usage: $0 {start|stop|restart}"
+        exit 1
+esac
+
+exit $?

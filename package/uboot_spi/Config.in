@@ -1,0 +1,9 @@
+
+
+config BR2_PACKAGE_UBOOT_SPI
+	bool "uboot for spi flash"
+	default y
+	select BR2_UBOOT_SPI
+	help
+		uboot for spi flash
+
