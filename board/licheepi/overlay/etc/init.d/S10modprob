@@ -4,9 +4,19 @@
 #
 
 start() {
-        echo "start esp8089"
-        modprobe esp8089
-        /bin/sleep 2
+  echo "modprobe wlan"
+#  modprobe mt7601u
+#  modprobe esp8089
+#  /bin/sleep 2
+
+  timeout=0; 
+  while ! ip a | grep -q 'wlan' ; do 
+    if [ $timeout -ge 10 ] ; then break; fi;
+    timeout=$((timeout+1));
+    sleep 1; 
+  done;
+  echo "wlan timeout $timeout"
+
 }
 stop() {
         echo "stop esp8089"

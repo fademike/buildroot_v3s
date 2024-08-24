@@ -16,6 +16,7 @@ The main goal is to support all available features/peripherals on these SoCs wit
 - driver for esp8089
 - gst1-plugin-cedar (cedar_h264enc for gstreamer)
 - support spi nor flash
+- usb otg for connect usb-wifi or connect to PC (usb0 interface)
 
 ## Tested SoC Hardware Features
 
@@ -64,5 +65,4 @@ sudo dd if=output/images/sdcard.img of=/dev/sdX bs=4M
 Enable the "CedarVE H.264 encoding demo" option in the `make nconfig` customizations step (located in the `External options` sub-menu), and proceed with the build process.
 
 Demo program source code is available at [h264enc_demo](https://github.com/Unturned3/h264enc_demo)
-
 

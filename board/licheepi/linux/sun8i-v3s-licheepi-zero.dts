@@ -56,24 +56,12 @@
 };
 
 
-&usb_otg {
-	dr_mode = "host";
-	status = "okay";
-};
-
-&usbphy {
-	usb0_id_det = <&pio 5 6 GPIO_ACTIVE_HIGH>;
-	status = "okay";
-};
-
 /*
 &ehci0 {
 	status = "okay";
 };
-&ohci0 {
-	status = "okay";
-};
 */
+
 &mmc0 {
 	broken-cd;
 	bus-width = <4>;
@@ -100,9 +88,27 @@
 	};
 };
 
+&ohci0 {
+	status = "okay";
+};
+
 &uart0 {
 	pinctrl-0 = <&uart0_pb_pins>;
 	pinctrl-names = "default";
+	status = "okay";
+};
+
+
+&usb_otg {
+//	dr_mode = "host";
+	dr_mode = "otg";
+	status = "okay";
+};
+
+&usbphy {
+	usb0_id_det-gpios = <&pio 5 6 GPIO_ACTIVE_HIGH>;
+//	usb0_id_det = <&pio 5 6 GPIO_ACTIVE_HIGH>;
+////	usb0_id_det-gpios = <&pio 5 6 GPIO_ACTIVE_HIGH>;
 	status = "okay";
 };
 
@@ -114,10 +120,10 @@
 
 &spi0 {		// NOR Flash
         status ="okay";          
-    flash: gd25q256@0 {
+    flash: mx25l12805d@0 {
         #address-cells = <1>;
         #size-cells = <1>;
-        compatible = "gigadevice,gd25q256", "jedec,spi-nor";
+        compatible = "macronix,mx25l12805d", "jedec,spi-nor";
         reg = <0>;
         spi-max-frequency = <10000000>;
         partitions {
@@ -143,24 +149,15 @@
                 //read-only;
             };
 
-//            partition@520000 {
-//                label = "rootfs";
-//                reg = <0x520000 0xAB0000>;
-//            };
-//
-//            partition@FA0000 {
-//                label = "overlay";
-//                reg = <0xFD0000 0x30000>;
-//            };
-
+// 16MB
             partition@520000 {
                 label = "rootfs";
-                reg = <0x520000 0x16B0000>;
+                reg = <0x520000 0xAB0000>;
             };
 
-            partition@1BD0000 {
+            partition@FA0000 {
                 label = "overlay";
-                reg = <0x1BD0000 0x430000>;
+                reg = <0xFD0000 0x30000>;
             };
 
         };
@@ -170,7 +167,7 @@
 
 
 // OV2640
-
+/*
 &csi1 {
 	status = "okay";
 	pinctrl-names = "default";
@@ -209,8 +206,8 @@
 		};
 	};
 };
+*/
 
-/*
 // OV5640
 &csi1 {
 	pinctrl-names = "default";
@@ -263,4 +260,4 @@
 		};
 	};
 };
-*/
+
